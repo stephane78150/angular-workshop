@@ -1,31 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CountryService } from './exercise1.service';
-import { NEVER, Observable, map } from 'rxjs';
-import { Countries } from './exercise1.model';
+import { NEVER, Observable, map, tap } from 'rxjs';
+import { Countries, Country } from './exercise1.model';
+import {  FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({  
+  standalone: true,
   selector: 'app-exercise1',
   templateUrl: './exercise1.component.html',
   styleUrls: ['./exercise1.component.css'],
-  providers: [CountryService]
+  imports: [ReactiveFormsModule, CommonModule]
 })
 export class Exercise1Component implements OnInit {
-
+  private countryService: CountryService;
   public countries$: Observable<Countries> = NEVER;
   public countryCount$: Observable<number> = NEVER;
-  public selectedCountry: string | null = null;
+  public countryDropdown = new FormControl<Country['id']>(undefined);
 
-  constructor(private countryService: CountryService) { }
+  constructor() { 
+    this.countryService = inject(CountryService);
+  }
 
   ngOnInit() {
     this.countries$ = this.countryService.GetCountries();
     this.countryCount$ = this.countries$.pipe(map(countries => countries?.length ?? 0));
   }
 
-  selectCountry({target}: Event) {
-    if (target instanceof HTMLSelectElement) {
-      this.selectedCountry = target.value;
-    }    
-  }
+
 }
 

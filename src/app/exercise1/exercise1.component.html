@@ -14,10 +14,10 @@
 <!-- Edit the code down below to implement the requested features -->
 <div>
   <div>Select one of {{this.countryCount$ | async}} countries:</div>
-  <select (change)="this.selectCountry($event)">
+  <select [formControl]="countryDropdown">
     <option *ngFor="let country of this.countries$ | async" [value]="country.id">
       {{country.description}}
     </option>
   </select>
-  <div>Current value: {{selectedCountry}}</div>
+  <div>Current value: {{countryDropdown.value}}</div>
 </div>

@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, map } from "rxjs";
 import { Countries } from "./exercise1.model";
 
-@Injectable()
+@Injectable({providedIn: "root"})
 export class CountryService {
     constructor(private httpClient: HttpClient) {
     }
